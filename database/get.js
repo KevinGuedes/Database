@@ -1,49 +1,50 @@
 const { FireSQL } = require('firesql')
 const { db } = require('./database')
 const fireSQL = new FireSQL(db)
+const operationMapper = (operation) => {
+    return data = {
+        date: new Date(operation.Date).toLocaleDateString(),
+        input: operation.input,
+        result: operation.result,
+        operationName: operation.operation
+    }
+}
 
-const getOperationData = async (operationName) => {
+const getOperationData = () => {
 
     try {
         const operationPromise = fireSQL.query
             (`
                 SELECT *
                 FROM Operations
-                WHERE operation = '${operationName}'
                 ORDER BY Date DESC
             `)
 
-        return await operationPromise.then(operations => {
+        return operationPromise.then(operations => {
 
-            let operationData = []
-
-            for (let operation of operations) {
-                operationData.push({
-                    date: new Date(operation.Date).toLocaleDateString(),
-                    input: operation.input,
-                    result: operation.result,
-                    operation: operation.operation
-                })
+            let data = {
+                'prime': [],
+                'fibonacci': [],
+                'gcd': [],
+                'count': [],
+                'quickSort': [],
+                'sum': []
             }
 
-            return operationData
+            for (let operation of operations) {
+                operation = operationMapper(operation)
+                let operationName = (operation.operationName).toLowerCase() 
+                if(data.hasOwnProperty(operationName))
+                    data[operationName].push(operation)
+            }
 
+            return data
         })
-
     }
-    catch (e) {
-        console.log(e)
+    catch (error) {
+        console.log(error)
     }
-
 }
-
-
-getOperationData('Prime').then(result => {
-    console.log(result)
-})
-
-
-
 
 
 // const {
