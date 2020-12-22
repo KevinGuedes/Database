@@ -35,48 +35,15 @@ const getOperationData = async () => {
             data[operationName].push(operation)
     }
 
-    console.log(data)
+    return data
 }
 
+const openPageAfterDataLoaded = () => {
+    getOperationData().then(result => {
+        console.log(result)
+        console.log("get data READY")
+    })
+    console.log("get data NOT READY")
+}
 
-getOperationData()
-
-
-// const {
-//     db,
-// } = require('./database')
-// const { FireSQL } = require('firesql')
-// const fireSQL = new FireSQL(db)
-
-// const primePromise = fireSQL.query
-//     (`
-//         SELECT *
-//         FROM Operations
-//         ORDER BY Date DESC
-//     `)
-
-// primePromise.then(operations => {
-//     let prime = []
-//     let fibonacci = []
-//     operations.forEach(op => {
-//         op.Date = new Date(op.Date)
-//         if(op.operation == 'Prime')
-//             prime.push(op)
-//         else if(op.operation == 'Fibonacci')
-//             fibonacci.push(op)
-//     });
-
-//     const operationData = {
-//         layout: operation,
-//         prime,
-//         fibonacci,
-//         gcd,
-//         count,
-//         quickSort,
-//         sum
-//     }
-
-//     // res.render('operation', operationData)
-
-// })
-
+openPageAfterDataLoaded()
