@@ -11,37 +11,35 @@ const operationMapper = (operation) => {
 }
 
 const getOperationData = async () => {
-    const operationPromise = fireSQL.query
-            (`
-                SELECT *
-                FROM Operations
-                ORDER BY Date DESC
-            `)
 
-    return await operationPromise.then(operations => {
+    const operations = await fireSQL.query
+        (`
+            SELECT *
+            FROM Operations
+            ORDER BY Date DESC
+        `)
 
-        let data = {
-            'prime': [],
-            'fibonacci': [],
-            'gcd': [],
-            'count': [],
-            'quickSort': [],
-            'sum': []
-        }
-    
-        for (let operation of operations) {
-            operation = operationMapper(operation)
-            let operationName = (operation.operationName).toLowerCase() 
-            if(data.hasOwnProperty(operationName))
-                data[operationName].push(operation)
-        }
-    
-        return data
-    })
+    let data = {
+        'prime': [],
+        'fibonacci': [],
+        'gcd': [],
+        'count': [],
+        'quickSort': [],
+        'sum': []
+    }
 
+    for (let operation of operations) {
+        operation = operationMapper(operation)
+        let operationName = (operation.operationName).toLowerCase()
+        if (data.hasOwnProperty(operationName))
+            data[operationName].push(operation)
+    }
+
+    console.log(data)
 }
-getOperationData().then(result => console.log(result))
 
+
+getOperationData()
 
 
 // const {
